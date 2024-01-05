@@ -21,45 +21,53 @@ fluidPage(theme = shinytheme("sandstone"),
                                        selected = "All"),
                            sliderInput("EstimatedSalary_ID", "Estimated Salary:",
                                        min = 0, max = 200000,
-                                       value = c(0,200000))),
+                                       value = c(0,200000)),
+                           sliderInput("Balance_ID", "Customer Balance:",
+                                       min = 0, max = 260000,
+                                       value = c(0,260000))
+                           ),
 
             mainPanel(width=10,
               tabsetPanel(type = "tabs",
                           tabPanel("Customer Demographics", 
                                    fluidRow(
                                      column(width = 12, show_col_types = FALSE,
-                                            h3("Step 1: select customer demographic filter"),
+                                            h2("Step 1: select customer demographic"),
                                             br(),
                                             fluidRow(
-                                              column(width = 9, show_col_types = FALSE,
-                                                     column(width = 4, show_col_types = FALSE,
-                                                            box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
-                                                                column(12, align="center",
-                                                                       plotOutput("map", width = "275px", height = "400px")))),
-                                                     
-                                                     column(width = 8, show_col_types = FALSE,
-                                                            box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
-                                                                column(12, align="center",
-                                                                       plotOutput("pie_chart", width = "475px", height = "475px")))),
+                                              column(width = 8, show_col_types = FALSE,
+                                                     h3("Selected Customers"),
                                                      fluidRow(
-                                                       column(width = 4, show_col_types = FALSE,
-                                                              h4("Total Customer Count: ", verbatimTextOutput("total")),
-                                                              h4("Percent of Total: ", verbatimTextOutput("total_perc"))),
-                                                       column(width = 4, show_col_types = FALSE,
-                                                              h4("Customer Stayed Count: ", verbatimTextOutput("stayed")),
-                                                              h4("Percent of Total: ", verbatimTextOutput("stayed_perc"))),
-                                                       column(width = 4, show_col_types = FALSE,
-                                                              h4("Total Churn Count: ", verbatimTextOutput("churn")),
-                                                              h4("Percent of Total: ", verbatimTextOutput("churn_perc"))))),
-                                              column(width = 3, show_col_types = FALSE,
-                                                     box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
-                                                         column(12, align="center",
-                                                                plotOutput("plot1", height = "650px")))),
+                                                       column(width = 5, show_col_types = FALSE,
+                                                              h5("Total Customer Count: ", verbatimTextOutput("total")),
+                                                              h5("Percent of Total: ", verbatimTextOutput("total_perc")),
+                                                              box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
+                                                                  column(12, align="left",
+                                                                         plotOutput("pie_chart", width = "450px", height = "450px")))),
+                                                       column(width = 7, show_col_types = FALSE,
+                                                              box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
+                                                                  column(12, align="center",
+                                                                         plotOutput("map", width = "400px", height = "600px")))))),
+
+                                              column(width = 4, show_col_types = FALSE,
+                                                     h3("Customer Churn"),
+                                                     fluidRow(
+                                                       column(width = 12, show_col_types = FALSE,
+                                                              box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
+                                                                  column(12, align="center",
+                                                                         plotOutput("plot1", width = "400px", height = "400px"))))),
+                                                     fluidRow(
+                                                       column(width = 12, show_col_types = FALSE,
+                                                              h5("Customer Stayed Count: ", verbatimTextOutput("stayed")),
+                                                              h5("Percent of Total: ", verbatimTextOutput("stayed_perc"))),
+                                                       column(width = 12, show_col_types = FALSE,
+                                                              h5("Total Churn Count: ", verbatimTextOutput("churn")),
+                                                              h5("Percent of Total: ", verbatimTextOutput("churn_perc")))))
                                               )))),
                           tabPanel("Analysis",
                                             fluidRow(
                                               column(width = 12, show_col_types = FALSE,
-                                                     h3("Step 2: select categories for factor analysis"),
+                                                     h2("Step 2: select category for factor analysis"),
                                                      br())),
                                             fluidRow(
                                               column(width = 3, show_col_types = FALSE,
@@ -68,26 +76,26 @@ fluidPage(theme = shinytheme("sandstone"),
                                                                 selectInput("SelectCategory_ID_1", 
                                                                             label = "Select Category",
                                                                             choices = c(SelectCategory_1_factor), 
-                                                                            selected = "Age"),
-                                                                sliderInput("Balance_ID", "Customer Balance:",
-                                                                            min = 0, max = 260000,
-                                                                            value = c(0,260000))
-                                                                ))),
-                                              column(width = 9, show_col_types = FALSE,
+                                                                            selected = "CustomerTenure"))))),
+                                            fluidRow(
+                                              column(width = 12, show_col_types = FALSE,
+                                                     h3("Percent churned within customer demographic"),
                                                      box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
                                                          column(12, align="center",
-                                                                plotOutput("plot2", height = "375px")))),
-                                              fluidRow(
-                                                column(title = "Title test test test", width = 12, show_col_types = FALSE,
-                                                       h3("Table"),
-                                                       DT::dataTableOutput("table")))
-                                            )
-                          )
+                                                                plotOutput("plot2", height = "700px"))))),
+                                            fluidRow(
+                                              column(width = 12, show_col_types = FALSE,
+                                                     h3("Number of customers churned within customer demographic"),
+                                                     box(width = NULL, solidHeader = TRUE, status = "primary", color = "#286192",
+                                                         column(12, align="center",
+                                                                plotOutput("plot3", height = "700px")))))),
+                          
+                          tabPanel("Tabel",
+                                   fluidRow(
+                                     column(title = "Title test test test", width = 12, show_col_types = FALSE,
+                                            h3("Table"),
+                                            DT::dataTableOutput("table"))))
               )
             )
           )
-)
-
-
-
-
+        )
