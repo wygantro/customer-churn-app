@@ -3,6 +3,10 @@ This is a generic customer churn dashboard developed in R Shiny. The main purpos
 
 [project presentation PDF link](presentaion.pdf)
 
+### System Diagram
+
+<img src="./assets/system_diagram.png" width="650">
+
 ### Page 1 Screenshot (select customer demographic)
 
 <img src="./assets/app_page1.png" width="650">

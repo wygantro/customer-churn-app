@@ -1,8 +1,8 @@
-library(shiny)
 library(dplyr)
-library(tidyr)
 library(ggplot2)
 library(readr)
+library(shiny)
+library(tidyr)
 library(tidyverse)
 
 churn_modeling <- read_csv(file = "./churn_modeling.csv")
@@ -13,12 +13,19 @@ print(summary(churn_modeling))
 # delete customer specific data columns
 churn_modeling <- churn_modeling %>% select(-c(RowNumber, CustomerId, Surname))
 
-churn_modeling$CreditScore <- cut(churn_modeling$CreditScore, breaks = c(0, 100, 200, 300, 400, 500, 600, 700, 800, 850), include.lowest = T, right = F)
-levels(churn_modeling$CreditScore) <- c(0, 100, 200, 300, 400, 500, 600, 700, 800, 850)
+churn_modeling$CreditScore <- cut(churn_modeling$CreditScore,
+                                  breaks = c(0, 100, 200, 300, 400,
+                                             500, 600, 700, 800, 850),
+                                  include.lowest = T, right = F)
+levels(churn_modeling$CreditScore) <- c(0, 100, 200, 300, 400,
+                                        500, 600, 700, 800, 850)
 
 # binning credit score column by level (by range = 10 years)
-churn_modeling$Age <- cut(churn_modeling$Age, breaks = c(0, 30, 40, 50, 60, 70, 80, 90, 100), include.lowest = T, right = F)
-levels(churn_modeling$Age) <- c('18 - 29', '30 - 39', '40 - 49', '50 - 59', '60 - 69', '70 - 79', '80 - 89', '90 - 100')
+churn_modeling$Age <- cut(churn_modeling$Age, breaks = c(0, 30, 40, 50,
+                                                         60, 70, 80, 90, 100),
+                          include.lowest = T, right = F)
+levels(churn_modeling$Age) <- c('18 - 29', '30 - 39', '40 - 49', '50 - 59',
+                                '60 - 69', '70 - 79', '80 - 89', '90 - 100')
 
 # numeric "Balance" values to integers
 churn_modeling$Balance <- floor(churn_modeling$Balance)
@@ -48,18 +55,27 @@ mapdata <- map_data("world")
 colnames(mapdata)[5]='Geography'
 
 # initialize european region
-european_countries <- c("Portugal", "Spain", "France", "UK", "Ireland", "Italy", "Switzerland", "Austria", "Germany", "Belgium", "Netherlands", "Denmark", "Norway", "Sweden", "Finland", "Luxembourg", "Andorra", "Poland", "Czech Republic", "Slovakia", "Hungary", "Slovenia")
+european_countries <- c("Portugal", "Spain", "France", "UK", "Ireland",
+                        "Italy", "Switzerland", "Austria", "Germany",
+                        "Belgium", "Netherlands", "Denmark", "Norway", "Sweden",
+                        "Finland", "Luxembourg", "Andorra", "Poland",
+                        "Czech Republic", "Slovakia", "Hungary", "Slovenia")
 mapdata <- mapdata[mapdata$Geography %in% european_countries ,]
 
 # create binary columns for countries present in churn_modeling$Geography
 mapdata <- mapdata %>% 
-  mutate("France_NA_NA" = ifelse(Geography=="France",1,0)) %>%
-  mutate("Spain_NA_NA" = ifelse(Geography=="Spain",1,0)) %>%
-  mutate("Germany_NA_NA" = ifelse(Geography=="Germany",1,0)) %>%
-  mutate("France_Spain_NA" = ifelse(Geography=="France" | Geography=="Spain",1,0)) %>%
-  mutate("Spain_Germany_NA" = ifelse(Geography=="Spain" | Geography=="Germany",1,0)) %>%
-  mutate("France_Germany_NA" = ifelse(Geography=="France" | Geography=="Germany",1,0)) %>%
-  mutate("France_Spain_Germany" = ifelse(Geography=="France" | Geography=="Spain" | Geography=="Germany",1,0))
+  mutate("France_NA_NA" = ifelse(Geography=="France", 1, 0)) %>%
+  mutate("Spain_NA_NA" = ifelse(Geography=="Spain", 1, 0)) %>%
+  mutate("Germany_NA_NA" = ifelse(Geography=="Germany", 1, 0)) %>%
+  mutate("France_Spain_NA" = ifelse(Geography=="France" |
+                                      Geography=="Spain", 1, 0)) %>%
+  mutate("Spain_Germany_NA" = ifelse(Geography=="Spain" |
+                                       Geography=="Germany", 1, 0)) %>%
+  mutate("France_Germany_NA" = ifelse(Geography=="France" |
+                                        Geography=="Germany", 1, 0)) %>%
+  mutate("France_Spain_Germany" = ifelse(Geography=="France" |
+                                           Geography=="Spain" |
+                                           Geography=="Germany", 1, 0))
 
-# view (mapdata_filt)
+# rewrite to mapdata.csv
 write_csv(mapdata, "./mapdata.csv")
