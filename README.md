@@ -3,6 +3,8 @@ This is a generic customer churn dashboard developed in R Shiny. The main purpos
 
 [project presentation PDF link](presentaion.pdf)
 
+[blog post](https://nycdatascience.com/blog/meetup/r-shiny-customer-churn/)
+
 ### System Diagram
 
 <img src="./assets/system_diagram.png" width="650">
